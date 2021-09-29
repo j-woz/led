@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+
+# LED
+
+THIS=$( cd $( dirname $0 ) ; /bin/pwd )
+export LED_HOME=$( cd $THIS/.. ; /bin/pwd )
+
+export INPUTRC=$LED_HOME/etc/inputrc
+export LED_RUN=1
+
+TCLSH=/usr/bin/tclsh
+
+# TCLSH=$HOME/Public/sfw/summit/tcl-8.6.6/bin/tclsh
+
+$TCLSH $LED_HOME/lib/led.tcl ${*}

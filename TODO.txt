@@ -1,0 +1,11 @@
+Line number bug after e/f (open file)
+
+Need automake to set Makefile settings, tclsh location!
+
+Change backup behavior- hop over files to exponential selection
+This works, but the 1st backup order could be improved
+
+goto relative offset
+https://www.gnu.org/software/ed/manual/ed_manual.html#Line-addressing
+
+segfault on Ctrl+D ?
