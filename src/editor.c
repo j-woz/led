@@ -1,5 +1,6 @@
 
 #define _GNU_SOURCE // for asprintf()
+#include <assert.h>
 #include <getopt.h>
 #include <signal.h>
 #include <stdbool.h>
@@ -31,10 +32,15 @@ initialize(const char* sysdir)
   rl_add_defun("my-revert", my_revert, -1);
   rl_startup_hook = (rl_hook_func_t *) startup_hook;
 
-  asprintf(&history_edit,    "%s/edit.history",    sysdir);
-  asprintf(&history_command, "%s/command.history", sysdir);
-  asprintf(&history_fs,      "%s/fs.history",      sysdir);
-  asprintf(&history_eval,    "%s/eval.history",    sysdir);
+  int n;
+  n = asprintf(&history_edit,    "%s/edit.history",    sysdir);
+  assert(n > 0);
+  n = asprintf(&history_command, "%s/command.history", sysdir);
+  assert(n > 0);
+  n = asprintf(&history_fs,      "%s/fs.history",      sysdir);
+  assert(n > 0);
+  n = asprintf(&history_eval,    "%s/eval.history",    sysdir);
+  assert(n > 0);
 
   history_mode_current = NONE;
 }
