@@ -8,7 +8,6 @@ set -eu
 # Currently used by configure
 # This should support the minimal POSIX shell
 
-# Copied from /dev/helpers.sh: Cannot source that file (#111)
 crash()
 {
   echo    >&2
