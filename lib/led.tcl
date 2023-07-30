@@ -876,12 +876,3 @@ if [ info exists env(LED_RUN) ] {
   led::init {*}$argv
   led::run
 }
-
-# set s 123,4566
-# set r [ led::consume_int s ] ; show r s
-
-# set s p
-# set r [ led::consume_int s ] ; show r s
-
-# set s 2,3
-# set r [ led::parse_address s ] ; show r s
