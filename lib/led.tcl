@@ -872,6 +872,7 @@ namespace eval led {
 }
 
 if [ info exists env(LED_RUN) ] {
+  # Run this as the main program
   led::init {*}$argv
   led::run
 }
