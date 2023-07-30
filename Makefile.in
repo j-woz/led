@@ -1,4 +1,8 @@
 
+# Makefile.in
+# We do not use Automake because we need a shared library for Tcl
+#    and Automake wants to make libtool libraries
+
 PREFIX = @prefix@
 CC = @CC@
 CPPFLAGS = -I . @CPPFLAGS@ @TCL_INCLUDE_SPEC@
