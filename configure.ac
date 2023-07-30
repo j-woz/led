@@ -221,6 +221,7 @@ then
       Tcl version.  Expected ${TCL_OLD_VERSION} but got ${TCL_VERSION}])
 fi
 
+: ${USE_TCLSH_LOCAL:=0}
 # Find tclsh binary name
 if [[ ${USE_TCLSH_LOCAL} == 0 ]]
 then
