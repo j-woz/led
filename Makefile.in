@@ -36,3 +36,6 @@ tags: src/editor.h src/editor.c
 
 clean:
 	rm -fv lib/*.so src/*.o
+
+distclean: clean
+	rm -fv configure config.cache config.status
