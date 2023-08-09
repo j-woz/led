@@ -21,6 +21,7 @@ fi
 export TCL_VERSION=0
 
 # In order from most to least preferred
+# We currently require 8.6 - could try "8.7 8.6"
 TCL_VERSION_PREFS="8.6"
 
 AC_ARG_WITH(tcl-version,
@@ -86,7 +87,6 @@ AC_ARG_WITH(tcl,
     ]
 )
 
-echo OK1
 USE_TCL_LIB_DIR=0
 
 AC_ARG_WITH(tcl-lib-dir,
@@ -97,24 +97,15 @@ AC_ARG_WITH(tcl-lib-dir,
         AC_MSG_RESULT([using Tcl lib dir: ${USE_TCL_LIB_DIR}])
     ])
 
-echo OK2
-
 if [[ ${TCL_VERSION} != 0 ]]
 then
   # We have locked in a version choice
   TCL_VERSION_PREFS=${TCL_VERSION}
 fi
 
-echo OK3
-
-echo $TCL_VERSION_PREFS
-
-# set -x
-echo hi
 # Check in order from most to least preferred
 for TCLVER in ${TCL_VERSION_PREFS}
 do
-  echo TCLVER $TCLVER
   if [[ ${USE_TCL_LIB_DIR} == 0 ]]
   then
     LIB_DIR_OPTS="${USE_TCL}/lib ${USE_TCL}/lib64"
@@ -133,11 +124,8 @@ do
     LIB_DIR_OPTS="${USE_TCL_LIB_DIR}"
   fi
 
-  echo LIB_DIR_OPTS    $LIB_DIR_OPTS
-
   for LIB_DIR in ${LIB_DIR_OPTS}
   do
-    echo LIB_DIR1 $LIB_DIR
     if ! [[ -d ${LIB_DIR} ]]
     then
       continue
@@ -153,10 +141,7 @@ do
       USE_TCL_LIB_DIR=${LIB_DIR}
 
       #  We found the library - work out which variants are present
-      echo LIB_DIR2 $LIB_DIR
-      echo LIBTCL_PREFIX $LIBTCL_PREFIX
       MAYBE_LIBTCL_SO="${LIB_DIR}/${LIBTCL_PREFIX}.so"
-      echo MAYBE_LIBTCL_SO $MAYBE_LIBTCL_SO
       if [[ -r "${MAYBE_LIBTCL_SO}" ]]
       then
         USE_LIBTCL_SO="${MAYBE_LIBTCL_SO}"
