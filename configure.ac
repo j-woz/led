@@ -24,6 +24,22 @@ export TCL_VERSION=0
 # We currently require 8.6 - could try "8.7 8.6"
 TCL_VERSION_PREFS="8.6"
 
+UNAME=$(uname)
+# This syntax requires Bash:
+if [[ ${UNAME:0:6} == "CYGWIN" ]]
+then
+  # Cygwin/Windows
+  AC_MSG_RESULT([Detected Cygwin.])
+  SO_SUFFIX="dll.a"
+elif [[ ${UNAME:0:6} == "Darwin" ]]
+then
+  AC_MSG_RESULT([Detected Mac/Darwin.])
+  SO_SUFFIX="dylib"
+else
+  AC_MSG_RESULT([Default to Linux.])
+  SO_SUFFIX="so"
+fi
+
 AC_ARG_WITH(tcl-version,
     AS_HELP_STRING([--with-tcl-version],
                    [Tcl version. Minimum is 8.6. If not specified,
@@ -31,7 +47,7 @@ AC_ARG_WITH(tcl-version,
     [
         TCL_VERSION=${withval}
         AC_MSG_NOTICE([user specified Tcl version ${TCL_VERSION}])
-        LIBTCL=libtcl${TCL_VERSION}.so
+        LIBTCL=libtcl${TCL_VERSION}.${SO_SUFFIX}
     ],
     [
         AC_MSG_NOTICE([Tcl version is not specified.])
@@ -132,20 +148,14 @@ do
     fi
     LIB_DIR=$( cd ${LIB_DIR} ; /bin/pwd ) # Canonicalize
     LIBTCL_PREFIX=libtcl${TCLVER}
-    LIBTCL=${LIBTCL_PREFIX}.so
+    LIBTCL=${LIBTCL_PREFIX}.${SO_SUFFIX}
     AC_MSG_CHECKING([for Tcl ${TCLVER} library at _${LIB_DIR}/${LIBTCL}_])
     if [[ -r ${LIB_DIR}/${LIBTCL} ]]
     then
       AC_MSG_RESULT([yes])
       TCL_VERSION=${TCLVER}
       USE_TCL_LIB_DIR=${LIB_DIR}
-
-      #  We found the library - work out which variants are present
-      MAYBE_LIBTCL_SO="${LIB_DIR}/${LIBTCL_PREFIX}.so"
-      if [[ -r "${MAYBE_LIBTCL_SO}" ]]
-      then
-        USE_LIBTCL_SO="${MAYBE_LIBTCL_SO}"
-      fi
+      USE_LIBTCL_SO=${LIB_DIR}/${LIBTCL}
       break 2
     else
       AC_MSG_RESULT([no])
