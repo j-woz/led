@@ -115,6 +115,7 @@ my_revert(int _v1, int _v2)
   rl_beg_of_line(0, 0);
   rl_insert_text(line_original);
   rl_redisplay();
+  return 1;
 }
 
 void
