@@ -13,4 +13,5 @@ TCLSH=/usr/bin/tclsh
 
 # TCLSH=$HOME/Public/sfw/summit/tcl-8.6.6/bin/tclsh
 
-$TCLSH $LED_HOME/lib/led.tcl ${*}
+# Need ${*:-} syntax on Darwin, else ${*} may be seen as unset
+$TCLSH $LED_HOME/lib/led.tcl ${*:-}
