@@ -116,7 +116,7 @@ namespace eval led {
         set led::cln $P(1)
         print "n"
       } elseif { [ string range $P(1) 0 0 ] eq "/" } {
-        search $P(1)
+        setup_search $P(1)
       } else {
         abort "unusable 2nd argument: '$P(1)'"
       }
@@ -144,6 +144,14 @@ namespace eval led {
       set cln 1
     }
     close $fd
+  }
+
+  proc setup_search { text } {
+    set led::cln 0
+    set found [ search $text ]
+    if { ! $found } {
+      set led::cln 1
+    }
   }
 
   proc run { } {
