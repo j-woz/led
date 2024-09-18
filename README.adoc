@@ -63,6 +63,8 @@ $ make install
 
 == Usage
 
+=== Key commands
+
 `.`::
 Edit file
 
@@ -161,5 +163,9 @@ If `PATTERN` is omitted, repeats last search.
 `=`::
 Show current line number, filename, and say if file is modified.
 
-`'X`::
+`'[X]`::
 Jump to mark `X`.
+
+=== Addressing
+
+Key commands can be prefixed with line addresses:
