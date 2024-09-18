@@ -1,4 +1,6 @@
 
+:toc:
+
 = LED
 
 `led` is a line editor based around the
@@ -51,10 +53,10 @@ Programmer example:
 
 ----
 $ make
-src/main.c:11:10: fatal error: ‘xyz’ undeclared here
+src/main.c:1234:10: fatal error: ‘xyz’ undeclared here
 
 # Jump in to edit the line!
-$ led src/main.c 11
+$ led src/main.c 1234
 
 # or
 $ led src/main.c /xyz
@@ -62,12 +64,12 @@ $ led src/main.c /xyz
 
 == Installation
 
-Install readline and history support for your system with the development packages.
+Install GNU Readline and History support for your system with the development packages.
 
 This is:
 
 * APT package: `libreadline-dev`
-* Homebrew:
+* Homebrew:    `readline`
 
 `led` uses a standard Autotools build.
 
@@ -81,6 +83,34 @@ $ make install
 ----
 
 Use `./configure --help` for help.
+
+=== Non-standard libreadline location
+
+If you have libreadline/libhistory in a non-standard location, such as a from-source installation or an Anaconda environment, use something like:
+
+==== Anaconda
+
+This pattern works for Linux or Mac.
+
+----
+$ C=$HOME/path/to/conda"
+$ export CFLAGS="-I$C/include"
+$ export LDFLAGS="-L$C/lib -Wl,-rpath -Wl,$C/lib"
+$ export LIBS="-lhistory"
+$ ./configure --prefix=...
+$ make install
+----
+
+==== Mac Homebrew
+
+----
+$ C=/usr/local/opt/readline
+$ export CFLAGS="-I$C/include"
+$ export LDFLAGS="-L$C/lib"
+$ export LIBS="-lhistory -lreadline"
+$ ./configure --prefix=...
+$ make install
+----
 
 == Usage
 
