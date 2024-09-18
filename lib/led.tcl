@@ -198,7 +198,7 @@ namespace eval led {
     variable sysdir
     variable search_last
 
-    load $env(LED_HOME)/lib/libtcleditor.so
+    load $env(LED_HOME)/lib/libtcleditor.$env(SO_SUFFIX)
     set sysdir $env(HOME)/.sys/led
 
     set context_print 5

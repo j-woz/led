@@ -9,9 +9,9 @@ export LED_HOME=$( cd $THIS/.. ; /bin/pwd )
 export INPUTRC=$LED_HOME/etc/inputrc
 export LED_RUN=1
 
-TCLSH=/usr/bin/tclsh
-
-# TCLSH=$HOME/Public/sfw/summit/tcl-8.6.6/bin/tclsh
+# configure-time substitutions:
+TCLSH=@USE_TCLSH@
+export SO_SUFFIX=@SO_SUFFIX@
 
 # Need ${*:-} syntax on Darwin, else ${*} may be seen as unset
 $TCLSH $LED_HOME/lib/led.tcl ${*:-}

@@ -9,6 +9,12 @@ AC_CONFIG_HEADERS([config.h])
 # Checks for programs.
 AC_PROG_CC
 
+if test "x$LIBS" = x
+then
+  LIBS="-lreadline"
+fi
+AC_SUBST(LIBS)
+
 DPKG_ARCH=
 # Debian distros may put in architecture-specific subdirectory
 if which dpkg-architecture > /dev/null 2>&1
@@ -26,6 +32,7 @@ TCL_VERSION_PREFS="8.6"
 
 # Default sed in-place:
 SED_I="sed -i"
+PLATFORM="Linux"
 
 UNAME=$(uname)
 # This syntax requires Bash:
@@ -39,12 +46,15 @@ then
   AC_MSG_RESULT([Detected Mac/Darwin.])
   SO_SUFFIX="dylib"
   SED_I="sed -i ''"
+  PLATFORM="Mac"
 else
   AC_MSG_RESULT([Default to Linux.])
   SO_SUFFIX="so"
 fi
 
 AC_SUBST(SED_I)
+AC_SUBST(PLATFORM)
+AC_SUBST(SO_SUFFIX)
 
 AC_ARG_WITH(tcl-version,
     AS_HELP_STRING([--with-tcl-version],
@@ -269,8 +279,6 @@ TCL_LIB_SPEC_EXTRA="${TCL_LIBS}"
 AC_SUBST(TCL_LIB_SPEC_EXTRA)
 
 # Checks for libraries.
-
-# Checks for libraries.
 AX_LIB_READLINE()
 if [[ ${ax_cv_lib_readline} == "no" ]] || \
    [[ ${ax_cv_lib_readline_history}  == "no" ]]
@@ -285,5 +293,5 @@ AC_CHECK_HEADERS([unistd.h])
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile bin/led])
 AC_OUTPUT

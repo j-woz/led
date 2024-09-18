@@ -7,27 +7,43 @@ PREFIX = @prefix@
 CC = @CC@
 CPPFLAGS = -I . @CPPFLAGS@ @TCL_INCLUDE_SPEC@
 CFLAGS = -fPIC @CFLAGS@
-LDFLAGS = @TCL_LIB_SPEC@ -lreadline
-RPATHS = -Wl,-rpath -Wl,@USE_LIBTCL_SO@ -Wl,-rpath
+LDFLAGS = @TCL_LIB_SPEC@ @LDFLAGS@
+LIBS = @LIBS@
+RPATHS = -Wl,-rpath -Wl,@USE_LIBTCL_SO@
 
-SED_I = @SED_I@
+SED_I    = @SED_I@
+PLATFORM = @PLATFORM@
 
-all: lib/libtcleditor.so
+ifeq ($(PLATFORM),Mac)
+  SO_SUFFIX = dylib
+  MAC_NAME = -install_name $(PREFIX)/$(LIB_TCL_EDITOR)
+  SHARED = -dynamiclib
+else
+  SO_SUFFIX = so
+  MAC_NAME =
+  SHARED = -shared
+endif
+
+LIB_TCL_EDITOR = lib/libtcleditor.$(SO_SUFFIX)
+
+all: $(LIB_TCL_EDITOR)
 
 src/editor_wrap.c: src/editor.i src/editor.h Makefile
 	swig -tcl $(<)
 	$(SED_I) s/Editor_Init/Tcleditor_Init/ $(@)
 
-lib/libtcleditor.so: src/editor_wrap.o src/editor.o
-	gcc -shared -o $(@) $(^) \
-		$(LDFLAGS) \
-		$(RPATH)
+$(LIB_TCL_EDITOR): src/editor_wrap.o src/editor.o
+	gcc $(SHARED) -o $(@) $(^) \
+		$(LDFLAGS)      \
+                $(LIBS) \
+		$(RPATHS) \
+                $(MAC_NAME)
 
-install: lib/libtcleditor.so
+install: $(LIB_TCL_EDITOR)
 	mkdir -pv $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/etc
-	cp -uv bin/led $(PREFIX)/bin
-	cp -uv lib/led.tcl lib/libtcleditor.so $(PREFIX)/lib
-	cp -uv etc/help.txt etc/inputrc $(PREFIX)/etc
+	cp -uv bin/led                       $(PREFIX)/bin
+	cp -uv lib/led.tcl $(LIB_TCL_EDITOR) $(PREFIX)/lib
+	cp -uv etc/help.txt etc/inputrc      $(PREFIX)/etc
 
 tags: TAGS
 
