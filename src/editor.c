@@ -1,12 +1,10 @@
 
 #define _GNU_SOURCE // for asprintf()
 #include <assert.h>
-#include <getopt.h>
-#include <signal.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
+// Do not need on Cygwin: 2024-09-18
+// #include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -29,6 +27,8 @@ history_mode history_mode_current;
 void
 initialize(const char* sysdir)
 {
+  // This connects the revert keystroke in etc/inputrc
+  // with the C function that restores the original line
   rl_add_defun("my-revert", my_revert, -1);
   rl_startup_hook = (rl_hook_func_t *) startup_hook;
 
@@ -45,6 +45,9 @@ initialize(const char* sysdir)
   history_mode_current = NONE;
 }
 
+/**
+   Works with readline to insert the original line for editing
+*/
 static int
 startup_hook()
 {
