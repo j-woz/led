@@ -27,13 +27,29 @@ install: lib/libtcleditor.so
 	cp -uv lib/led.tcl lib/libtcleditor.so $(PREFIX)/lib
 	cp -uv etc/help.txt etc/inputrc $(PREFIX)/etc
 
-tags: src/editor.h src/editor.c
-	etags $(^) /usr/include/readline/readline.h \
-		/usr/include/readline/rlstdc.h \
-		/usr/include/readline/rltypedefs.h \
-		/usr/include/readline/keymaps.h \
-		/usr/include/readline/tilde.h \
-		/usr/include/readline/history.h
+tags: TAGS
+
+TAGS: src/editor.c src/editor.h
+        # Use GCC to generate header dependencies
+        #     so that readline headers are available in etags
+        # sed: Remove object file with colon,
+        #             leading spaces, backslashes
+        # Print 1 path per line
+	gcc -M -MG $(<)                | \
+	   sed 's/.*://;s/ *//;s/\\//' | \
+	   fmt -w 1                    > src/editor.d
+	etags -L src/editor.d
+
+.PHONY: tags
+
+# Replaced: 2024-09-18
+	# etags $(^)                                 \
+	#     	/usr/include/readline/readline.h   \
+	# 	/usr/include/readline/rlstdc.h     \
+	# 	/usr/include/readline/rltypedefs.h \
+	# 	/usr/include/readline/keymaps.h    \
+	# 	/usr/include/readline/tilde.h      \
+	# 	/usr/include/readline/history.h
 
 clean:
 	rm -fv lib/*.so src/*.o
