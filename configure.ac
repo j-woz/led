@@ -24,6 +24,9 @@ export TCL_VERSION=0
 # We currently require 8.6 - could try "8.7 8.6"
 TCL_VERSION_PREFS="8.6"
 
+# Default sed in-place:
+SED_I="sed -i"
+
 UNAME=$(uname)
 # This syntax requires Bash:
 if [[ ${UNAME:0:6} == "CYGWIN" ]]
@@ -35,10 +38,13 @@ elif [[ ${UNAME:0:6} == "Darwin" ]]
 then
   AC_MSG_RESULT([Detected Mac/Darwin.])
   SO_SUFFIX="dylib"
+  SED_I="sed -i ''"
 else
   AC_MSG_RESULT([Default to Linux.])
   SO_SUFFIX="so"
 fi
+
+AC_SUBST(SED_I)
 
 AC_ARG_WITH(tcl-version,
     AS_HELP_STRING([--with-tcl-version],

@@ -10,11 +10,13 @@ CFLAGS = -fPIC @CFLAGS@
 LDFLAGS = @TCL_LIB_SPEC@ -lreadline
 RPATHS = -Wl,-rpath -Wl,@USE_LIBTCL_SO@ -Wl,-rpath
 
+SED_I = @SED_I@
+
 all: lib/libtcleditor.so
 
 src/editor_wrap.c: src/editor.i src/editor.h Makefile
 	swig -tcl $(<)
-	sed -i s/Editor_Init/Tcleditor_Init/ $(@)
+	$(SED_I) s/Editor_Init/Tcleditor_Init/ $(@)
 
 lib/libtcleditor.so: src/editor_wrap.o src/editor.o
 	gcc -shared -o $(@) $(^) \
