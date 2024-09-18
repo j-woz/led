@@ -472,7 +472,7 @@ namespace eval led {
     set p1 [ lindex $address 2 ]
     set result [ list ]
     for { set i $p0 } { $i <= $p1 } { incr i } {
-      led::verbose info "delete: $cln"
+      led::verbose info "delete: $i"
       set t [ get_text $p0 ]
       lappend result $t
       set text [ lreplace $text [ expr $p0 - 1 ] [ expr $p0 - 1 ] ]
