@@ -1,6 +1,44 @@
-Tcl extension example
 
-https://wiki.tcl.tk/9849
+= LED
+
+LED is a line editor based around the GNU Readline library.  Basically, it is an `ed` clone with Readline usability.
+
+== Use example
+
+Basic use:
+
+----
+# Start led to edit a file:
+$ led myfile.txt
+new file: myfile.txt
+: a
+   1> hello
+: wq
+backup: current file does not yet exist...
+wrote:  myfile.txt
+
+# Show the file using cat
+$ cat myfile.txt
+hello
+
+# Re-open file and search for "hello"
+$ led myfile.txt /hello
+opened: myfile.txt
+   1@ hello
+# Append "bye"
+: a
+   2> bye
+# Print the file
+: n
+   1: hello
+   2@ bye
+
+# Save and exit
+: wq
+backup: myfile.txt~
+wrote:  myfile.txt
+----
 
 
-https://cygwin.com/cygwin-ug-net/dll.html
+
+== Installation
