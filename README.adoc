@@ -1,7 +1,7 @@
 
 = LED
 
-LED is a line editor based around the GNU Readline library.  Basically, it is an `ed` clone with Readline usability.
+`led` is a line editor based around the GNU Readline library.  Basically, it is an `ed` clone with Readline usability.
 
 == Use example
 
@@ -39,6 +39,127 @@ backup: myfile.txt~
 wrote:  myfile.txt
 ----
 
-
+Inside `led`, use `h` for help.
 
 == Installation
+
+Install readline and history support for your system with the development packages.
+
+This is:
+
+* APT package: `libreadline-dev`
+* Homebrew:
+
+`led` uses a standard Autotools build.
+
+----
+$ git clone git@github.com:j-woz/led.git
+$ cd led
+$ ./bootstrap
+$ ./configure --prefix=[PREFIX] ...
+$ make
+$ make install
+----
+
+== Usage
+
+`.`::
+Edit file
+
+`_`::
+Evaluate Tcl code.  This could be used to implement macros and other extension features.  Example:
++
+----
+: _ puts hello
+hello
+----
+
+`a`::
+Append text after current line.
+Uses Readline.
+
+`c`::
+Change line interactively with Readline.
+
+`d`::
+Delete line
+
+`e [FILENAME]`::
+Edit the given file.
+Use . for interactive prompt.
+If no filename is given, it reports the current filename.
+Re-reads the file.
+If there are unsaved changes to the file, `led` reports a warning and does nothing.
+
+`E [FILENAME]`::
+Edit the given file like `e` but unconditionally.
+
+`f [FILENAME]`::
+Set the current file name.
+If no argument is given, simply print current file name.
+If `FILENAME` is `.`, get filename from interactive prompt with Readline completion.
+
+`F [FILENAME]`::
+Set current file name like `f` but unconditionally.
+
+`i`::
+Insert text before current line.
+Uses Readline.
+
+`k[X]`::
+Set bookmark X.
+Can be used to save important places in a file.
+`X` must be a single character.
+Bookmarks can be listed with `K` or jumped to with `'`.
+
+`k-[X]`::
+Unset bookmark `X`.
+
+`K`::
+Show all marks.
+
+`n`::
+Print lines with line numbers
+
+`p`::
+Print lines in raw format.
+
+`r [FILENAME]`::
+Read given file, appending after current line.
+Use `FILENAME` `.` for interactive prompt.
+If no argument is given, uses current file.
+
+`q`::
+Quit.
+
+`Q`::
+Quit unconditionally without saving.
+
+`w [FILENAME]`::
+Write file.  If given an argument, writes to that file.
+
+`wq`::
+Write and quit.
+
+`x`::
+Paste cut buffer
+
+`y`::
+Yank (copy) to cut buffer.
+
+`Y`::
+Show cut buffer
+
+`/[PATTERN]`::
+Search for `PATTERN`.
+If `PATTERN` is omitted, repeats last search.
+
+`\[PATTERN]`::
+Reverse search.
+If `PATTERN` is omitted, repeats last search.
+
+`=`::
+Show current line number, filename, and say if file is modified.
+
+`'X`::
+Jump to mark `X`.

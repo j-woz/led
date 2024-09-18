@@ -1,6 +1,6 @@
 LED COMMANDS
 
-.   Edit line
+.   Edit file from prompt
 _   Evaluate Tcl code
 a   Append after line
 c   Change line
@@ -10,6 +10,7 @@ E   Edit the given file unconditionally
 f   Set current file name.  Use . for interactive prompt
     If no argument is given, simply print current file name
 F   Set current file name unconditionally
+i   Insert before line
 kX  Set mark X
 k-X Unset mark X
 K   Show marks
