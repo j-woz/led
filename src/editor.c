@@ -92,7 +92,8 @@ read_file(char* prompt)
     history_mode_current = FS;
   }
 
-  // Configure readline to auto-complete paths when the tab key is hit.
+  // Configure readline to auto-complete paths
+  // when the tab key is hit.
   rl_bind_key('\t', rl_complete);
   last_result = readline(prompt);
   return 1;
