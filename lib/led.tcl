@@ -1,7 +1,162 @@
 
 # LED TCL
 
-package require woztools
+proc abort { args } {
+  puts [ join {*}$args ]
+  exit 1
+}
+
+# Given: enum E { T1 T2 }
+# Defines global array E with members E(T1)=0, E(T2)=1
+proc enum { name members } {
+  uplevel #0 "global $name"
+  global $name
+  set n 0
+  foreach m $members {
+    set ${name}($m) $n
+    incr n
+  }
+}
+
+# Ternary operator
+proc ? { condition a b } {
+  if [ uplevel expr $condition ] {
+    return $a
+  } else {
+    return $b
+  }
+}
+
+proc printf { args } {
+  set newline ""
+  if { [ lindex $args 0 ] == "-n" } {
+    set newline "-nonewline"
+    head args
+  }
+  if { [ llength $args ] == 0 } {
+    error "printf: Requires format!"
+  }
+  set fmt [ lindex [ head args ] 0 ]
+  puts {*}$newline [ format $fmt {*}$args ]
+}
+
+# usage: head <list> <count>?
+# Reordered arguments 2023-10-25
+# @return and remove first element of list
+proc head { args } {
+  set count 1
+  if { [ llength $args ] == 1 } {
+    set name [ lindex $args 0 ]
+  } elseif { [ llength $args ] == 2 } {
+    set name  [ lindex $args 0 ]
+    set count [ lindex $args 1 ]
+  } else {
+    error "head: requires: <list> <count>? - received: $args"
+  }
+
+  upvar $name L
+
+  set result [ list ]
+  for { set i 0 } { $i < $count } { incr i } {
+    lappend result [ lindex $L 0 ]
+    set L [ lreplace $L 0 0 ]
+  }
+  return $result
+}
+
+# Random integer in [x1,x2]
+proc rand_int { x1 x2 } {
+  if { $x1 > $x2 } {
+    error "bad boundaries!"
+  }
+  set range [ expr $x2 - $x1 + 1 ]
+  set r [ expr int(rand() * $range) ]
+  set result [ expr $x1 + $r ]
+  return $result
+}
+
+proc ensure_file_exists { path } {
+  if [ file exists $path ] {
+    return true
+  }
+  try {
+    set d [ file dirname $path ]
+    file mkdir $d
+    set fd [ open $path "w" ]
+    close $fd
+  } on error e {
+    puts $e
+    return false
+  }
+  return true
+}
+
+# Assign argv to given names
+# A: Associative-array: map option to value
+# P: Positional parameters: indexed from 0
+# opts: Options string e.g., "hc:p"
+# V: e.g., $argv
+proc getopts { A_name P_name opts V } {
+  upvar $A_name A
+  upvar $P_name P
+  upvar optind count
+  # Colons
+  array set C {}
+  _getopts_parse_opt_string C $opts
+  set i 0
+  set count 0
+  set q 0
+  set N [ llength $V ]
+  set dash_found false
+  while { $i < $N } {
+    set t [ lindex $V $i ]
+    set c [ string range $t 0 0 ]
+    if { $c eq "-" && ! $dash_found} {
+      set c [ string range $t 1 1 ]
+    } else {
+      set P($q) $t
+      incr q
+      incr i
+      continue
+    }
+    if { $c eq "-" } { # Found --
+      set dash_found true
+      incr i
+      incr count
+      continue
+    }
+    if { ! [ info exists C($c) ] } {
+      error "getopts: invalid flag: $c"
+    }
+    if { [ string equal $C($c) ":" ] } {
+      incr i
+      incr count
+      set t [ lindex $V $i ]
+      lappend A($c) $t
+    } else {
+      lappend A($c) {}
+    }
+    incr i
+    incr count
+  }
+}
+
+proc _getopts_parse_opt_string { C_name opts } {
+  upvar $C_name C
+  set i 0
+  set N [ string length $opts ]
+  while { $i < $N } {
+    set c     [ string range $opts $i $i ]
+    incr i
+    set colon [ string range $opts $i $i ]
+    if { [ string equal $colon ":" ] } {
+      set C($c) ":"
+      incr i
+    } else {
+      set C($c) "_"
+    }
+  }
+}
 
 namespace eval led {
 
@@ -358,7 +513,7 @@ namespace eval led {
       (( line_number = [ llength $text ] + $line_number + 1 ))
     }
     if { $line_number < 1 || $line_number > $n } {
-      verbose warning [ cat "invalid line number:" \
+      verbose warning [ join "invalid line number:" \
                             "$line_number (line count: $n)" ]
       return
     }
@@ -395,7 +550,7 @@ namespace eval led {
     variable cln
     variable context_print
     variable text
-    set numbering [ ternary [ string equal $command "n" ] 1 0 ]
+    set numbering [ ? [ string equal $command "n" ] 1 0 ]
     set n [ llength $text ]
     # show cln n text
     set i0 [ expr $cln - $context_print ]
@@ -808,9 +963,13 @@ namespace eval led {
     variable cln
     variable search_last
     variable text
+    set result false
+    # Either forward or back slash
     set slash [ getc command ]
-    set d [ ternary [ string equal $slash "/" ] 1 -1 ]
+    # Offset so as not to match current line
+    set d [ ? [ string equal $slash "/" ] 1 -1 ]
     set pattern $command
+    # Slash with no argument reuses last search
     if { $pattern eq "" } {
        set pattern $search_last
     } else {
@@ -827,9 +986,11 @@ namespace eval led {
         set cln $line
         print "n"
         break
+        set result true
       }
       incr line $d
     }
+    return $result
   }
 
   proc status { command address } {
@@ -839,9 +1000,9 @@ namespace eval led {
     variable text
     variable search_last
 
-    set m [ ternary $modified " (modified)" "" ]
+    set m [ ? $modified " (modified)" "" ]
     set n [ llength $text ]
-    set s [ ternary [ string equal $search_last "" ] \
+    set s [ ? [ string equal $search_last "" ] \
                 "" " /$search_last" ]
     puts "$cln/$n $file_current$m$s"
   }
