@@ -1,9 +1,17 @@
 
 = LED
 
-`led` is a line editor based around the GNU Readline library.  Basically, it is an `ed` clone with Readline usability.
+`led` is a line editor based around the
+https://en.wikipedia.org/wiki/GNU_Readline[GNU Readline]
+library.  Basically, it is an
+https://www.gnu.org/fun/jokes/ed-msg.en.html[`ed` clone]
+with Readline usability.
+
+The main use case is when you want to quickly open and make a small change to a file without opening a full-screen editor.  You can quickly jump to a certain line number or pattern and make a change _without leaving your shell/terminal_!
 
 == Use example
+
+Inside `led`, use `h` for help.
 
 Basic use:
 
@@ -39,7 +47,18 @@ backup: myfile.txt~
 wrote:  myfile.txt
 ----
 
-Inside `led`, use `h` for help.
+Programmer example:
+
+----
+$ make
+src/main.c:11:10: fatal error: ‘xyz’ undeclared here
+
+# Jump in to edit the line!
+$ led src/main.c 11
+
+# or
+$ led src/main.c /xyz
+----
 
 == Installation
 
@@ -60,6 +79,8 @@ $ ./configure --prefix=[PREFIX] ...
 $ make
 $ make install
 ----
+
+Use `./configure --help` for help.
 
 == Usage
 
