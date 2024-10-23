@@ -158,6 +158,11 @@ proc _getopts_parse_opt_string { C_name opts } {
   }
 }
 
+# Last character of string
+proc lastc { s } {
+  return [ string range $s end end ]
+}
+
 namespace eval led {
 
   ## Core variables
@@ -737,6 +742,7 @@ namespace eval led {
     global env
     read_file "$env(PWD) > "
     set file_current [ get_last_result ]
+    puts "file: $file_current"
   }
 
   proc mark { command address } {

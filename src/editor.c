@@ -24,6 +24,8 @@ static int startup_hook(void);
 typedef enum { NONE, EDIT, COMMAND, FS } history_mode;
 history_mode history_mode_current;
 
+char* quit = NULL;
+
 void
 initialize(const char* sysdir)
 {
@@ -43,6 +45,8 @@ initialize(const char* sysdir)
   assert(n > 0);
 
   history_mode_current = NONE;
+
+  quit = strdup("q");
 }
 
 /**
@@ -65,8 +69,13 @@ read_edit(char* prompt, char* line)
   }
   line_original = line;
   last_result = readline(prompt);
-  add_history(last_result);
-  append_history(1, history_edit);
+  if (last_result != NULL)
+  {
+    add_history(last_result);
+    append_history(1, history_edit);
+  }
+  else
+    last_result = strdup("");
 
   return 1;
 }
@@ -81,8 +90,14 @@ read_cmd(char* prompt)
   }
   line_original = "";
   last_result = readline(prompt);
-  add_history(last_result);
-  append_history(1, history_command);
+  if (last_result != NULL)
+  {
+    add_history(last_result);
+    append_history(1, history_command);
+  }
+  else
+    last_result = quit;
+
   return 1;
 }
 
@@ -99,6 +114,12 @@ read_file(char* prompt)
   // when the tab key is hit.
   rl_bind_key('\t', rl_complete);
   last_result = readline(prompt);
+  if (last_result != NULL)
+  {
+    add_history(last_result);
+    append_history(1, history_fs);
+  }
+
   return 1;
 }
 
