@@ -301,3 +301,6 @@ AC_CHECK_HEADERS([unistd.h])
 
 AC_CONFIG_FILES([Makefile bin/led])
 AC_OUTPUT
+
+# Cygwin seems to leave this as non-executable:
+chmod u+x bin/led
