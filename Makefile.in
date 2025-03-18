@@ -11,15 +11,15 @@ LDFLAGS = @TCL_LIB_SPEC@ @LDFLAGS@
 LIBS = @LIBS@
 RPATHS = -Wl,-rpath -Wl,@USE_LIBTCL_SO@
 
-SED_I    = @SED_I@
-PLATFORM = @PLATFORM@
+PLATFORM  = @PLATFORM@
+SO_SUFFIX = @SO_SUFFIX@
+SED_I     = @SED_I@
+SWIG      = @SWIG@
 
 ifeq ($(PLATFORM),Mac)
-  SO_SUFFIX = dylib
   MAC_NAME = -install_name $(PREFIX)/$(LIB_TCL_EDITOR)
   SHARED = -dynamiclib
-else
-  SO_SUFFIX = so
+else  #  Linux or Cygwin
   MAC_NAME =
   SHARED = -shared
 endif
