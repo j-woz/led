@@ -8,6 +8,12 @@ AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CC
+AC_PATH_PROG([SWIG], [swig], 0)
+if [[ $SWIG == 0 ]]
+then
+  AC_MSG_ERROR([You must have SWIG!])
+fi
+AC_ARG_VAR([SWIG], [The SWIG program to use])
 
 if test "x$LIBS" = x
 then
