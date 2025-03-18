@@ -1042,7 +1042,7 @@ namespace eval led {
   proc help { } {
     global env
     puts $env(LED_HOME)
-    fcp $env(LED_HOME)/etc/help.txt -
+    puts [ exec cat $env(LED_HOME)/etc/help.txt ]
   }
 }
 
