@@ -29,7 +29,7 @@ LIB_TCL_EDITOR = lib/libtcleditor.$(SO_SUFFIX)
 all: $(LIB_TCL_EDITOR)
 
 src/editor_wrap.c: src/editor.i src/editor.h Makefile
-	swig -tcl $(<)
+	$(SWIG) -tcl $(<)
 	$(SED_I) s/Editor_Init/Tcleditor_Init/ $(@)
 
 $(LIB_TCL_EDITOR): src/editor_wrap.o src/editor.o
