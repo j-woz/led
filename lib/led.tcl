@@ -91,6 +91,24 @@ proc ensure_file_exists { path } {
   return true
 }
 
+# Math mode
+proc (( { args } {
+  if { [ lindex $args end ] ne "))" } {
+    abort "error in (( - no matching ))"
+  }
+
+  if { [ lindex $args 1 ] eq "=" } {
+    set lvalue [ lindex $args 0 ]
+    upvar $lvalue target
+    set tokens [ lreplace $args 0 1 ]
+    set tokens [ lreplace $tokens end end ]
+    set target [ expr {*}$tokens ]
+    return $target
+  } else {
+    return [ expr {*}$args ]
+  }
+}
+
 # Assign argv to given names
 # A: Associative-array: map option to value
 # P: Positional parameters: indexed from 0
