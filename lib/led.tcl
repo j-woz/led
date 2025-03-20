@@ -384,9 +384,6 @@ namespace eval led {
     }
   }
 
-  # "^="   { puts $cln }
-
-
   proc peekc { s } {
     # Return first character
     return [ string range $s 0 0 ]
