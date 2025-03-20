@@ -8,4 +8,8 @@ This works, but the 1st backup order could be improved
 goto relative offset
 https://www.gnu.org/software/ed/manual/ed_manual.html#Line-addressing
 
-segfault on Ctrl+D ?
+segfault on Ctrl+D ?  Not on Linux.  2025-03-20
+
+Implement copy/paste?  NEW: 2025-03-20
+
+Implement transfer?  NEW: 2025-03-20
