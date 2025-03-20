@@ -6,6 +6,12 @@ proc abort { args } {
   exit 1
 }
 
+proc assert { condition msg } {
+  if { ! [ uplevel 1 "expr $condition" ] } {
+    error $msg
+  }
+}
+
 # Given: enum E { T1 T2 }
 # Defines global array E with members E(T1)=0, E(T2)=1
 proc enum { name members } {
@@ -25,6 +31,10 @@ proc ? { condition a b } {
   } else {
     return $b
   }
+}
+
+proc cat { args } {
+  return [ join $args " " ]
 }
 
 proc printf { args } {
@@ -106,6 +116,47 @@ proc (( { args } {
     return $target
   } else {
     return [ expr {*}$args ]
+  }
+}
+
+# Debugging variable query
+# Note: Not fast due to "info exists"
+# Use "- <MSG>" for a message
+# Use "." for a blank line
+# TODO: Single line mode?
+proc show { args } {
+  set N [ llength $args ]
+  set quote false
+  for { set i 0 } { $i < $N } { incr i } {
+    set v [ lindex $args $i ]
+
+    if { $v eq "-" } {
+      incr i
+      set msg [ lindex $args $i ]
+      puts -nonewline $msg
+      puts -nonewline " "
+      continue
+    }
+
+    if { $v eq "-q" } {
+      set quote true
+      continue
+    }
+
+    if { $v eq "." } {
+      puts ""
+      continue
+    }
+
+    upvar $v t
+    if { ! [ info exists t ] } {
+      error "show: Variable does not exist: $v"
+    }
+    if { $quote } {
+      puts "$v: '$t'"
+    } else {
+      puts "$v: $t"
+    }
   }
 }
 
@@ -345,6 +396,7 @@ namespace eval led {
     variable cln
 
     set address [ parse_address input ]
+    # show address
 
     # TODO: s///
 
@@ -408,6 +460,11 @@ namespace eval led {
         lappend digits $c
       } else break
     }
+    if { $digits == "-" } {
+      # TODO: Throw exception
+      verbose warning "bad address: '$digits'"
+      return "ERROR"
+    }
     return [ join $digits "" ]
   }
 
@@ -422,8 +479,10 @@ namespace eval led {
   proc parse_address { inputs* } {
     upvar ${inputs*} inputs
     set a0 [ consume_int   inputs ]
+    if { $a0 eq "ERROR" } return
     set c  [ consume_comma inputs ]
     set a1 [ consume_int   inputs ]
+    if { $a0 eq "ERROR" } return
     # show a0 a1
     return [ list $a0 $c $a1 ]
   }
@@ -533,8 +592,10 @@ namespace eval led {
       (( line_number = [ llength $text ] + $line_number + 1 ))
     }
     if { $line_number < 1 || $line_number > $n } {
-      verbose warning [ join "invalid line number:" \
-                            "$line_number (line count: $n)" ]
+      puts "error $line_number"
+      set msg [ cat "invalid line number:" \
+                    "$line_number (line count: $n)" ]
+      verbose warning $msg
       return
     }
     set cln $line_number
@@ -935,6 +996,7 @@ namespace eval led {
   }
 
   proc address_normalize { address* } {
+    # Fill in any blanks in the address
     variable cln
     variable text
     upvar ${address*} address
@@ -969,13 +1031,17 @@ namespace eval led {
     global VERBOSE
     variable verbosity
 
-    switch [ llength $args ] {
+    set n [ llength $args ]
+    switch $n {
       1 { verbose info {*}$args }
       2 {
         lassign $args level message
         if { $VERBOSE($level) <= $verbosity } {
-          puts $message
+          puts "$message"
         }
+      }
+      default {
+        abort "verbose: ERROR: given $n args: $args"
       }
     }
   }
