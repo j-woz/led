@@ -29,6 +29,5 @@ y   Yank (copy) to cut buffer
 Y   Show cut buffer
 /   Search
 \   Reverse search
-=   Show current line number
--   Show buffer status
+=   Show buffer status
 'X  Jump to mark X
