@@ -355,7 +355,7 @@ namespace eval led {
     # Second argument
     if { [ array size P ] == 2 } {
       if [ string is integer $P(1) ] {
-        set led::cln $P(1)
+        goto $P(1)
         print "n"
       } elseif { [ string range $P(1) 0 0 ] eq "/" } {
         setup_search $P(1)
@@ -535,6 +535,9 @@ namespace eval led {
   proc insert { } {
     variable cln
     variable text
+    if { [ llength $text ] == 0 } {
+      set cln 1
+    }
     set text [ linsert $text [ expr $cln - 1 ] "" ]
     edit
   }
@@ -600,19 +603,24 @@ namespace eval led {
   proc goto { line_number } {
     variable cln
     variable text
-    set n [ llength $text ]
     if { $line_number < 0 } {
       (( line_number = [ llength $text ] + $line_number + 1 ))
     }
-    if { $line_number < 1 || $line_number > $n } {
+    if { $line_number < 1 } {
       puts "error $line_number"
       set msg [ cat "invalid line number:" \
                     "$line_number (line count: $n)" ]
       verbose warning $msg
       return
     }
+    set n [ llength $text ]
+    if { $line_number > $n } {
+      verbose info "goto: $line_number: end-of-file: line $n"
+      set line_number $n
+    } else {
+      verbose "goto: $line_number"
+    }
     set cln $line_number
-    verbose "goto: $cln"
   }
 
   proc try_goto_mark { input } {
