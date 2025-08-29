@@ -96,7 +96,7 @@ If you have libreadline/libhistory in a non-standard location, such as a from-so
 This pattern works for Linux or Mac.
 
 ----
-$ C=$HOME/path/to/conda"
+$ C=$HOME/path/to/conda
 # or
 $ C=$CONDA_PREFIX
 $ export CFLAGS="-I$C/include"
