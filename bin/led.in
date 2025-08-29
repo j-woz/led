@@ -2,6 +2,7 @@
 set -eu
 
 # LED
+# Assuming POSIX sh (dash) here
 
 THIS=$( cd $( dirname $0 ) ; /bin/pwd )
 export LED_HOME=$( cd $THIS/.. ; /bin/pwd )
