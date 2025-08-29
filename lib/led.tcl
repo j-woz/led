@@ -337,7 +337,13 @@ namespace eval led {
   # P: The positional command line arguments (list)
   proc setup_file { P* } {
     upvar ${P*} P
+
     set led::file_current ""
+
+    if { [ array size P ] >= 3 } {
+      abort "too many arguments!"
+    }
+
     if { [ array size P ] >= 1 } {
       set led::file_current $P(0)
     }
