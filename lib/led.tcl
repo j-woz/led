@@ -54,14 +54,18 @@ proc printf { args } {
 # Reordered arguments 2023-10-25
 # @return and remove first element of list
 proc head { args } {
-  set count 1
-  if { [ llength $args ] == 1 } {
-    set name [ lindex $args 0 ]
-  } elseif { [ llength $args ] == 2 } {
-    set name  [ lindex $args 0 ]
-    set count [ lindex $args 1 ]
-  } else {
-    error "head: requires: <list> <count>? - received: $args"
+  switch [ llength $args ] {
+    1 {
+      set name [ lindex $args 0 ]
+      set count 1
+    }
+    2 {
+      set name  [ lindex $args 0 ]
+      set count [ lindex $args 1 ]
+    }
+    default {
+      error "head: requires: <list> <count>? - received: $args"
+    }
   }
 
   upvar $name L
