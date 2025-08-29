@@ -64,12 +64,15 @@ $ led src/main.c /xyz
 
 == Installation
 
+Install SWIG.
+
 Install GNU Readline and History support for your system with the development packages.
 
 This is:
 
 * APT package: `libreadline-dev`
 * Homebrew:    `readline`
+* Anaconda:    `readline`
 
 `led` uses a standard Autotools build.
 
@@ -94,9 +97,11 @@ This pattern works for Linux or Mac.
 
 ----
 $ C=$HOME/path/to/conda"
+# or
+$ C=$CONDA_PREFIX
 $ export CFLAGS="-I$C/include"
 $ export LDFLAGS="-L$C/lib -Wl,-rpath -Wl,$C/lib"
-$ export LIBS="-lhistory"
+$ export LIBS="-lreadline -lhistory"
 $ ./configure --prefix=...
 $ make install
 ----
@@ -189,7 +194,7 @@ Quit.
 Quit unconditionally without saving.
 
 `w [FILENAME]`::
-Write file.  If given an argument, writes to that file.
+Write file.  If given an argument, writes to that file, and set the current file to that file.
 
 `wq`::
 Write and quit.
