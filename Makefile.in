@@ -40,10 +40,11 @@ $(LIB_TCL_EDITOR): src/editor_wrap.o src/editor.o
                 $(MAC_NAME)
 
 install: $(LIB_TCL_EDITOR)
-	mkdir -pv $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/etc
-	cp -uv bin/led                       $(PREFIX)/bin
-	cp -uv lib/led.tcl $(LIB_TCL_EDITOR) $(PREFIX)/lib
-	cp -uv etc/help.txt etc/inputrc      $(PREFIX)/etc
+	@ echo Installing LED...
+	@ mkdir -pv $(PREFIX)/bin $(PREFIX)/lib $(PREFIX)/etc
+	@ cp -uv bin/led                       $(PREFIX)/bin
+	@ cp -uv lib/led.tcl $(LIB_TCL_EDITOR) $(PREFIX)/lib
+	@ cp -uv etc/help.txt etc/inputrc      $(PREFIX)/etc
 
 tags: TAGS
 
