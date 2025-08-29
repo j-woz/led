@@ -2,7 +2,7 @@
 # LED TCL
 
 proc abort { args } {
-  puts [ join {*}$args ]
+  puts "led: [ join {*}$args ]"
   exit 1
 }
 
