@@ -298,7 +298,10 @@ namespace eval led {
     set cut_buffer ""
     set marks [ dict create ]
 
-    getopts A P "qv" $args
+    getopts A P "hqv" $args
+    if [ info exists A(h) ] {
+      led_help
+    }
     set_verbosity A
     setup_file P
   }
@@ -1125,9 +1128,17 @@ namespace eval led {
   }
 
   proc help { } {
+    # Help from within the program
     global env
-    puts $env(LED_HOME)
+    puts "LED_HOME: $env(LED_HOME)"
+    puts ""
     puts [ exec cat $env(LED_HOME)/etc/help.txt ]
+  }
+
+  proc led_help { } {
+    # Help from the command line
+    help
+    exit
   }
 }
 

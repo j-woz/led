@@ -1,35 +1,43 @@
+LED INVOCATION
+
+  led [-h] [FILE] [LINE_NUMBER] [/PATTERN]
+
+  LINE_NUMBER: If an integer, jump to this line number in the FILE
+  PATTERN:     If given a slash, treat the following as a PATTERN,
+               and jump to that pattern in the FILE
+
 LED COMMANDS
 
-.         Edit file from prompt
-_         Evaluate Tcl code
-a         Append after line
-c         Change line
-d         Delete line
-e         Edit the given file.  Use . for interactive prompt
-E         Edit the given file unconditionally
-f         Set current file name.  Use . for interactive prompt
-          If no argument is given, simply print current file name
-F         Set current file name unconditionally
-i         Insert before line
-kX        Set mark X
-k-X       Unset mark X
-K         Show marks
-n         Print lines with line numbers
-p         Print lines
-q         Quit
-Q         Quit unconditionally
-r         Read given file, appending after current line.
-          Use . for interactive prompt
-          If no argument is given, uses current file.
-s/T1/T2   Substitute text 'T1' for 'T2'
-s         Replay last s command
-t         Transfer
-w         Write file.  If given an argument, write to that file.
-wq        Write and quit
-x         Paste cut buffer
-y         Yank (copy) to cut buffer
-Y         Show cut buffer
-/         Search
-\         Reverse search
-=         Show buffer status
-'X        Jump to mark X
+  .         Edit file from prompt
+  _         Evaluate Tcl code
+  a         Append after line
+  c         Change line
+  d         Delete line
+  e         Edit the given file.  Use . for interactive prompt
+  E         Edit the given file unconditionally
+  f         Set current file name.  Use . for interactive prompt
+            If no argument is given, simply print current file name
+  F         Set current file name unconditionally
+  i         Insert before line
+  kX        Set mark X
+  k-X       Unset mark X
+  K         Show marks
+  n         Print lines with line numbers
+  p         Print lines
+  q         Quit
+  Q         Quit unconditionally
+  r         Read given file, appending after current line.
+            Use . for interactive prompt
+            If no argument is given, uses current file.
+  s/T1/T2   Substitute text 'T1' for 'T2'
+  s         Replay last s command
+  t         Transfer
+  w         Write file.  If given an argument, write to that file.
+  wq        Write and quit
+  x         Paste cut buffer
+  y         Yank (copy) to cut buffer
+  Y         Show cut buffer
+  /         Search
+  \         Reverse search
+  =         Show buffer status
+  'X        Jump to mark X
