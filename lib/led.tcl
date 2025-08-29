@@ -420,7 +420,7 @@ namespace eval led {
       "^c"   { change }
       "^d"   { delete $address }
       "^h"   { help }
-      "^i"   { insert}
+      "^i"   { insert }
       "^[eE].*" { edit_current_file $input }
       "^[fF].*" { select_current_file $input }
       "^[kK].*" { mark $input $address }
