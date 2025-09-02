@@ -1106,9 +1106,13 @@ namespace eval led {
     set pattern $command
     # Slash with no argument reuses last search
     if { $pattern eq "" } {
-       set pattern $search_last
+      set pattern $search_last
     } else {
       set search_last $pattern
+    }
+    if { $pattern eq "" } {
+      puts "no pattern"
+      return false
     }
     set line [ expr $cln + $d ]
     set max  [ llength $text ]
