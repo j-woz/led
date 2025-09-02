@@ -259,7 +259,7 @@ namespace eval led {
   variable verbosity
   variable sysdir
 
-  namespace export verbose
+  namespace export verbose a i
 
   proc init { args } {
     global env
@@ -542,6 +542,30 @@ namespace eval led {
     edit
   }
 
+  proc a { s } {
+    # For use from _ macros
+
+    variable cln
+    variable text
+
+    set text [ linsert $text $cln $s ]
+    incr cln
+    return ""
+  }
+
+  proc i { s } {
+    # For use from _ macros
+
+    variable cln
+    variable text
+
+    if { [ llength $text ] == 0 } {
+      set cln 1
+    }
+    set text [ linsert $text [ expr $cln - 1 ] $s ]
+    return ""
+  }
+
   proc change { } {
     edit
   }
@@ -585,10 +609,12 @@ namespace eval led {
     set command [ lreplace $args 0 0 ]
     verbose debug "command: $command"
     try {
-      uplevel #0 {*}$command
+      set result [ uplevel #0 {*}$command ]
     } on error e {
-      puts $e
+      puts "Tcl error!"
+      set result $e
     }
+    if { $result ne "" } { puts $result }
   }
 
   proc try_goto { address } {
@@ -837,7 +863,8 @@ namespace eval led {
   }
   proc get_file { } {
     global env
-    read_file "$env(PWD) > "
+    # Use Tcl pwd as env(PWD) may be out-of-date
+    read_file "[pwd] > "
     set file_current [ get_last_result ]
     puts "file: $file_current"
   }
@@ -1155,6 +1182,8 @@ namespace eval led {
     exit
   }
 }
+
+namespace import led::a led::i
 
 if [ info exists env(LED_RUN) ] {
   # Run this as the main program
