@@ -124,14 +124,6 @@ $ make install
 `.`::
 Edit file
 
-`_`::
-Evaluate Tcl code.  This could be used to implement macros and other extension features.  Example:
-+
-----
-: _ puts hello
-hello
-----
-
 `a`::
 Append text after current line.
 Uses Readline.
@@ -154,11 +146,13 @@ Edit the given file like `e` but unconditionally.
 
 `f [FILENAME]`::
 Set the current file name.
+Uses Readline for filename completion.
 If no argument is given, simply print current file name.
 If `FILENAME` is `.`, get filename from interactive prompt with Readline completion.
+If the file already exists, `led` reports a warning and does nothing.
 
 `F [FILENAME]`::
-Set current file name like `f` but unconditionally.
+Set current file name like `f` but unconditionally.  Uses Readline for filename completion.
 
 `i`::
 Insert text before current line.
@@ -184,11 +178,12 @@ Print lines in raw format.
 
 `r [FILENAME]`::
 Read given file, appending after current line.
+Uses Readline for filename completion.
 Use `FILENAME` `.` for interactive prompt.
 If no argument is given, uses current file.
 
 `q`::
-Quit.
+Quit.  If there are unsaved changes, `led` reports a warning and does nothing.
 
 `Q`::
 Quit unconditionally without saving.
@@ -221,6 +216,23 @@ Show current line number, filename, and say if file is modified.
 
 `'[X]`::
 Jump to mark `X`.
+
+`_`::
+Evaluate Tcl code and print result.  Useful examples:
++
+----
+: _ puts hello
+hello
+: _ cd ..  # or anywhere
+: _ pwd
+: _ puts $led::text  #  the text buffer, a list of string
+: _ puts $led::cln   #  the current line number
+: _ set v [ lindex $led::text 123 ]  #  extract a line of text as a variable
+: _ a $v  #  append text (similar to the led command `a`)
+: _ i $v  #  insert text (similar to the led command `i`)
+----
++
+This could also be used to implement macros and other extension features.
 
 === Addressing
 

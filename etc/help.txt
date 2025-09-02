@@ -9,7 +9,6 @@ LED INVOCATION
 LED COMMANDS
 
   .         Edit file from prompt
-  _         Evaluate Tcl code
   a         Append after line
   c         Change line
   d         Delete line
@@ -41,3 +40,4 @@ LED COMMANDS
   \         Reverse search
   =         Show buffer status
   'X        Jump to mark X
+  _         Evaluate Tcl code
