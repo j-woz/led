@@ -171,7 +171,7 @@ do
     LIB_DIR=$( cd ${LIB_DIR} ; /bin/pwd ) # Canonicalize
     LIBTCL_PREFIX=libtcl${TCLVER}
     LIBTCL=${LIBTCL_PREFIX}.${SO_SUFFIX}
-    AC_MSG_CHECKING([for Tcl ${TCLVER} library at _${LIB_DIR}/${LIBTCL}_])
+    AC_MSG_CHECKING([for Tcl ${TCLVER} library at ${LIB_DIR}/${LIBTCL}])
     if [[ -r ${LIB_DIR}/${LIBTCL} ]]
     then
       AC_MSG_RESULT([yes])
