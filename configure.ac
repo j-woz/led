@@ -128,7 +128,7 @@ AC_ARG_WITH(tcl,
 USE_TCL_LIB_DIR=0
 
 AC_ARG_WITH(tcl-lib-dir,
-    AC_HELP_STRING([--with-tcl-lib-dir],
+    AS_HELP_STRING([--with-tcl-lib-dir],
                    [directory containing Tcl shared library]),
     [
         USE_TCL_LIB_DIR=${withval}
