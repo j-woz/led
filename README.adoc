@@ -117,6 +117,17 @@ $ ./configure --prefix=...
 $ make install
 ----
 
+== Invocation
+
+----
+$ led [-hqvv] [FILE]? [/pattern]? [line-number]
+----
+
+* `-h`  : Print help and exit
+* `-q`  : Run more quietly
+* `-v`  : Run more verbosely
+* `-vv` : Run very verbosely
+
 == Usage
 
 === Key commands
