@@ -1041,7 +1041,7 @@ namespace eval led {
     }
 
     set cut_buffer [ address_copy $address ]
-    show cut_buffer
+    # show cut_buffer
   }
 
   proc address_copy { address } {
