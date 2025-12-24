@@ -105,6 +105,21 @@ proc ensure_file_exists { path } {
   return true
 }
 
+proc unknown { cmd args } {
+  if { [ catch { exec which $cmd } output ] } {
+    puts "error: '$cmd' not a valid Tcl or shell command."
+    return
+  } else {
+    led::verbose warning "shell command: $cmd"
+  }
+  if { [ catch { eval exec $cmd $args } output ] } {
+    puts "error in shell command: \"$output\""
+  } else {
+    # Success
+    puts $output
+  }
+}
+
 # Math mode
 proc (( { args } {
   if { [ lindex $args end ] ne "))" } {

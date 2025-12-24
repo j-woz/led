@@ -218,7 +218,7 @@ Show current line number, filename, and say if file is modified.
 Jump to mark `X`.
 
 `_`::
-Evaluate Tcl code and print result.  Useful examples:
+Evaluate Tcl code or shell code and print result.  Useful examples:
 +
 ----
 : _ puts hello
@@ -232,6 +232,8 @@ hello
 : _ a $v  #  append text (similar to the led command `a`)
 : _ i $v  #  insert text (similar to the led command `i`)
 ----
++
+This tries to run the code as a Tcl command first, then tries to run it as a shell command.
 +
 This could also be used to implement macros and other extension features.
 
