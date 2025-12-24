@@ -1126,14 +1126,14 @@ namespace eval led {
       set search_last $pattern
     }
     if { $pattern eq "" } {
-      puts "no pattern"
+      puts "search with no pattern"
       return false
     }
     set line [ expr $cln + $d ]
     set max  [ llength $text ]
     while { true } {
       if { $line == 0 || $line > $max } {
-        puts "not found"
+        puts "search pattern not found"
         break
       }
       if [ regexp $pattern [ get_text $line ] ] {
