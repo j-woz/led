@@ -237,7 +237,7 @@ hello
 : _ cd ..  # or anywhere
 : _ pwd
 /home/self/dir
-: _ puts $led::text  #  the text buffer, a list of string
+: _ puts $led::text  #  the text buffer, a list of strings
 : _ puts $led::cln   #  the current line number
 : _ set v [ lindex $led::text 123 ]  #  extract a line of text as a variable
 : _ a $v  #  append text (similar to the led command `a`)
