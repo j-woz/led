@@ -240,7 +240,7 @@ fi
 
 : ${USE_TCLSH_LOCAL:=0}
 # Find tclsh binary name
-if [[ ${USE_TCLSH_LOCAL} == 0 ]]
+if [[ ${USE_TCLSH_LOCAL} = 0 ]]
 then
     AC_MSG_RESULT([checking for Tcl executable in ${USE_TCL} ...])
     USE_TCLSH=$( maint/find-tcl.sh ${USE_TCL} )
