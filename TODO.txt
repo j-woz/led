@@ -13,3 +13,5 @@ segfault on Ctrl+D ?  Not on Linux.  2025-03-20
 Implement copy/paste?  NEW: 2025-03-20
 
 Implement transfer?  NEW: 2025-03-20
+
+After search, a plain / should repeat the search. NEW: 2026-09-01
