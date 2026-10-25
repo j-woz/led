@@ -13,3 +13,9 @@ segfault on Ctrl+D ?  Not on Linux.  2025-03-20
 Implement copy/paste?  NEW: 2025-03-20
 
 Implement transfer?  NEW: 2025-03-20
+
+Make marks shift after append/insert/delete.  Delete should delete any marks on that line. 2026-10-24
+
+Allow addressing for r=read command, to prepend file to current file at line 0.  NEW: 2026-10-24
+
+Colors.  2026-10-24
