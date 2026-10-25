@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.71])
-AC_INIT([led], [0.1], [justin@wozniaks.org])
+AC_INIT([led],[0.1],[justin@wozniaks.org])
 AC_CONFIG_SRCDIR([src/editor.h])
 AC_CONFIG_HEADERS([config.h])
 
